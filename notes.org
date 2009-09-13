@@ -1,0 +1,51 @@
+morbidmeter -- a program to display in an understandable way how much
+time is left...
+
+* How will it work
+** Command line version
+   the command line just displays the result you are looking for based
+   on a configuration file, and the current date/time.  Default
+   display is based on calendar year.  Here are some options for
+   display units:
+   - year
+   - lunar month
+   - lunar phase
+   - month (need to select month)
+   - week
+   - day
+   - hour
+   - minute
+** Gui version
+   This version does all of the above, but displays in real-time on
+   desktop and updates in real-time.  E.g., a 24-hour analog or
+   digital clock could be displayed, or just a simple text with
+   calendar date. "March 13", even with attached time: "March 13, 9:01
+   AM."
+* Variables
+  - date_of_birth
+  - predicted_life_span
+    This ideally should be calculated, based on sex, behavior,
+    etc. but for now will keep it simple.
+* Command line options
+** program name
+   mmc = morbidmeter command line
+   mm = morbidmeter gui version
+** options
+   --dob = date of birth
+   --life = life span in years (float)
+   --file = config file (default is mm.conf)
+   --units = display units
+** display unit commands
+   example --units=year
+   year 
+   month (default is December) --month=Jan
+   lunarmonth
+   lunarphase
+   week
+   day
+   hour
+   minute
+* Language
+  Python
+* Command line parser
+  
