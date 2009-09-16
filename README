@@ -1,0 +1,5 @@
+MorbidMeter is a perverse program that is intended to lend perspective to one's life.
+
+The program takes your date of birth, your estimated life-span, today's date, and a unit of time (year, hour, minute, month, phase of the moon, maybe others) and generates where (when?) you are right now in that time unit.  
+
+The anticipated gui part of MorbidMeter will display a clock/calendar/etc. that will updated in realtime (albeit slowly --thank goodness) to remind you that nothing lasts forever.  Not even you.

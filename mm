@@ -17,4 +17,4 @@ export PYTHONBIN=/usr/bin/python
 
 cd $MORBIDMETERHOME
 
-"$PYTHONBIN" mmc.py "$@"
+"$PYTHONBIN" mm.py "$@"
