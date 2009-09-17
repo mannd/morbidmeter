@@ -48,4 +48,8 @@ time is left...
 * Language
   Python
 * Command line parser
-  
+* Measures (including Allie's suggestions)
+  - number of floors passed while falling off the Empire State Bldg
+  - length of candle burned down (say starting with 10" candle)
+  - lifetime of the Universe (e.g. 120 billion years have passed)
+  - year since year 1 AD 

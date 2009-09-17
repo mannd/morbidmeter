@@ -7,6 +7,7 @@ from optparse import OptionParser
 import ConfigParser
 import os
 from datetime import date
+from datetime import time
 from datetime import timedelta
 import datetime
 
@@ -47,7 +48,7 @@ def parse_options():
             print "rerun as python mm.py -- example "
             print "or as python mm.py --interactive to see what it will do."
         else:
-            print "rerun as ./mm --example to see what it will do."
+            print "rerun as ./mm --example "
             print "or as ./mm --interactive to see what it will do."
 
 def create_config():
@@ -68,27 +69,39 @@ def main():
     create_config()
     read_config()
     
-  
+    
 def days_alive(birthday, now):
     """ returns number of days alive """
     return (now - birthday).days
-    
-def proportional_date(days, ageofdeath):
+
+def percent_life(days, ageofdeath):
     totaldays = 365 * ageofdeath
-    percentlife = float(days) / float(totaldays)
+    return float(days) / float(totaldays)
+
+def proportional_date(days, ageofdeath):
+    percentlife = percent_life(days, ageofdeath)
     proportionalyeardays = percentlife * 365
     proportionaldate = date.fromordinal(int(proportionalyeardays))
     proportionaldate = proportionaldate.replace(year=2000)
     return proportionaldate
 
+def proportional_time(days, ageofdeath):
+    secs_in_day = 24 * 60 * 60
+    proportionalsecs = percent_life(days, ageofdeath) * secs_in_day
+    startdatetime = datetime.datetime(2000, 1, 1, 0, 0, 0)
+    return startdatetime + timedelta(seconds=proportionalsecs)
+
 def example():
     days = days_alive(datetime.date(1950,1,1),date.today())
     proportionaldate = proportional_date(days, 80)
+    proportionaltime = proportional_time(days, 80)
     print "Here is an example of how morbidmeter works."
     print "Assume your birthday is Jan 1, 1950."
     print "Further assume your predicted life span is 80 years."
     print "If your life took place over just one year,"
-    print "Today would be " + (proportionaldate).strftime("%b %d")
+    print "today would be " + (proportionaldate).strftime("%b %d")
+    print "If your life took place over a single day,"
+    print "the time would be " + (proportionaltime).strftime("%I:%M:%S %p")
     
 def interactive():
     year = int(raw_input("Enter year of birth: "))
@@ -98,8 +111,8 @@ def interactive():
     life_span = int(raw_input("Enter expected age of death: "))
     proportionaldate = proportional_date(days, life_span)
     print "MorbidMeter date is " + (proportionaldate).strftime("%b %d")
-
+    proportionaltime = proportional_time(days, life_span)
+    print "MorbidMeter time is " + (proportionaltime).strftime("%I:%M:%S %p")
 
 if __name__ == "__main__":
     main()
-
