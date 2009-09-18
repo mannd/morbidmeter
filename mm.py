@@ -43,13 +43,15 @@ def parse_options():
     elif (options.interactive):
         interactive()
     else:
-        print "Right now morbidmeter doesn't do much, but"
         if os_is_windows():
-            print "rerun as python mm.py -- example "
-            print "or as python mm.py --interactive to see what it will do."
+            program_invocation = "python mm.py"
         else:
-            print "rerun as ./mm --example "
-            print "or as ./mm --interactive to see what it will do."
+            program_invocation = "./mm"
+        print "Right now morbidmeter doesn't do much, but rerun as: "
+        print program_invocation + " --example"
+        print "or as "
+        print program_invocation + " --interactive"
+        print "to see what it will do."
 
 def create_config():
     if (not os.path.exists('mm.conf')):
@@ -68,7 +70,6 @@ def main():
     parse_options()
     create_config()
     read_config()
-    
     
 def days_alive(birthday, now):
     """ returns number of days alive """
