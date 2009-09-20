@@ -53,3 +53,26 @@ time is left...
   - length of candle burned down (say starting with 10" candle)
   - lifetime of the Universe (e.g. 120 billion years have passed)
   - year since year 1 AD 
+* Higher level planning
+** User
+   Each user has the following attributes
+   - name
+   - birthday
+   - estimated longevity (mutable)
+   In addition, each user can generate by h[is|er]self
+   - time alive (in a timedelta)
+     - now - birthday
+   - percentage alive
+     - (time alive) / longevity
+   Most of the calculation above just involves getting the units
+   right.
+   Other user attributes could be
+   - last measure used
+   - preferred measure
+   - output formatting (i.e. resolution)
+** Measures
+   A measure is the time scale used (better name, time scale?).  The
+   time scale has a minimum value and maximum value.  At birth, the
+   measure = the min value and at age of death measure = max value.
+   If age is > age of death then a "borrowed time" indicator can be
+   used along with a > max value result.
