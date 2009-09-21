@@ -6,5 +6,15 @@
 from datetime import *
 
 class TimeScale:
-    pass
+    """Time scale of measure used to calibrate MorbidMeter"""
+    def __init__(self, name):
+        self.name = name
+
+    minimum = 0
+    maximum = 100               # arbitrary min and max
+    
+    def duration(self):
+        return self.maximum - self.minimum
+
+
 

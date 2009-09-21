@@ -70,9 +70,32 @@ time is left...
    - last measure used
    - preferred measure
    - output formatting (i.e. resolution)
-** Measures
-   A measure is the time scale used (better name, time scale?).  The
-   time scale has a minimum value and maximum value.  At birth, the
-   measure = the min value and at age of death measure = max value.
-   If age is > age of death then a "borrowed time" indicator can be
-   used along with a > max value result.
+** TimeScale
+*** Definition
+    The TimeScale is the measurement used to calibrate MM.  The time
+    scale has a minimum value and maximum value.  At birth, the measure
+    = the min value and at age of death measure = max value.  If age is
+    > age of death then a "borrowed time" indicator can be used along
+    with a > max value result.
+*** Non-Time based TimeScales
+    The TimeScale doesn't have to be based on DateTime objects.  An
+    extended time scale that would use years as its basis would be the
+    AgeOfTheUniverse.  The min would be the Big Bang at year 0 and the
+    max would be say 100 billion years.  The time to proton
+    dissolution could be used, the time from the Big Bang to the
+    present could be used, the time from invention of writing until
+    now, etc. etc. all could be used.  Burning a candle, where the
+    measurement is in inches could be used.
+*** Calculating TimeScales
+    For integral or float TimeScales, just multiplying percent_alive()
+    times the TimeScale.max() and adding the result to TimeScale.min()
+    should work.  With datetime TimeScales, it is not possible to
+    multiple a float times a datetime.  The algorithm will be:
+
+    ts = TimeScale("whatever")
+    total_secs = timedelta(ts.max() - ts.min()).seconds
+    alive_secs = percent_alive() * total_secs
+    current_date = ts.min() + timedelta(alive_secs)
+
+
+
