@@ -5,9 +5,9 @@
 
 from datetime import *
 
-def datetime_in_secs(date_time):
-    days = date_time.days
-    secs = date_time.seconds
+def duration_in_secs(duration):
+    days = duration.days
+    secs = duration.seconds
     return (days * 24 * 60 * 60 + secs)
 
 class User:
@@ -23,7 +23,7 @@ class User:
         return datetime.now() - self.birthday
 
     def seconds_alive(self):
-        return datetime_in_secs(self.time_alive())
+        return duration_in_secs(self.time_alive())
 
     def seconds_longevity(self):
         return self.longevity * self.seconds_per_year

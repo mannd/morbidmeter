@@ -18,3 +18,6 @@ class TimeScale:
 
 
 
+class DateTimeScale(TimeScale):
+    pass
+
