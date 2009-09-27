@@ -11,6 +11,8 @@ from user import User
 from user import duration_in_secs
 from timescale import TimeScale, DateTimeScale
 from time import sleep
+from Tkinter import *
+from mmgui import SimpleWindow
 
 def os_is_windows():
     return os.name == 'nt'
@@ -102,11 +104,24 @@ def interactive():
         print("Not currently a realistic human life span.")
         return
     ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
-    while 1:
-        proportional_time = ts.proportional_time(u.percent_alive())
-        print proportional_time.strftime("%b %d %I:%M:%S %p"), \
-            proportional_time.microsecond / 1000, "msec"
-        sleep(2)
+
+    # continuously update console
+    # while True:
+    #     proportional_time = ts.proportional_time(u.percent_alive())
+    #     print proportional_time.strftime("%b %d %I:%M:%S %p"), \
+    #         proportional_time.microsecond / 1000, "msec"
+    #     sleep(2)
+    
+    # one time gui window display
+    proportional_time = ts.proportional_time(u.percent_alive())
+    formatted_time = str(proportional_time.strftime("%b %d %I:%M:%S %p")) + \
+            " " + str(proportional_time.microsecond / 1000) +  " msec"
+
+    root = Tk()
+    window = SimpleWindow(parent=root, text=formatted_time)
+    window.pack()
+    window.mainloop()
+    
 
 if __name__ == "__main__":
     main()

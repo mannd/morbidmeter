@@ -52,8 +52,8 @@ class User:
             M = 0
             s = 0
         if (m not in range(1,12) or d not in range(1,31)
-            or h not in range(1,24) or M not in range(1,6) or
-            s not in range(1,60)):
+            or h not in range(0,24) or M not in range(0,60) or
+            s not in range(0,60)):
             return False
         self.birthday = datetime(y,m,d,h,M,s)
         return True
