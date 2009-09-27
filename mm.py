@@ -9,7 +9,7 @@ import os
 from datetime import *
 from user import User
 from user import duration_in_secs
-from timescale import TimeScale
+from timescale import TimeScale, DateTimeScale
 from time import sleep
 
 def os_is_windows():
@@ -91,13 +91,9 @@ def interactive():
     M = 0
     s = 0
     u.birthday = datetime(y,m,d,h,M,s)
-    ts = TimeScale("year")
-    ts.minimum = datetime(2000, 1, 1)
-    ts.maximum = datetime(2000, 12, 31)
+    ts = DateTimeScale("year", datetime(2000,1,1), datetime(2000,12,31))
     while 1:
-        proportional_secs = u.percent_alive() * duration_in_secs(ts.duration())
-        proportional_time = (datetime(2000,1,1) + 
-                             timedelta(seconds=proportional_secs))
+        proportional_time = ts.proportional_time(u.percent_alive())
         print proportional_time.strftime("%b %d %I:%M:%S %p"), \
             proportional_time.microsecond / 1000, "msec"
         sleep(2)
