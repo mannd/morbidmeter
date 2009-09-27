@@ -32,6 +32,12 @@ def parse_options():
                       action="store_true", dest="interactive",
                       default = False,
                       help="run morbidmeter in interactive mode")
+    parser.add_option("-t", "--timescale", action="store",
+                      type="string", dest="timescale",
+                      help="set time scale")
+    parser.add_option("-u", "--user", action="store",
+                      type="string", dest="user",
+                      help="select user, new if blank")
     (options, args) = parser.parse_args()
     if (options.example):
         example()
@@ -78,20 +84,17 @@ def example():
     
 def interactive():
     print "MorbidMeter will output your calculated date and time"
-    print "assuming your life was compressed to a single year and"
-    print "that you will live to be 80."
+    print "assuming your life was compressed to a single year."
     print "MorbidMeter will update every 2 seconds."
     print "Press Control-C to stop."
-    u = User("david")
-    y = int(raw_input("Enter year of birth: "))
-    m = int(raw_input("Enter month of birth [1-12]: "))
-    d = int(raw_input("Day of birth [1-31]: "))
-    # assume born at MN
-    h = 0
-    M = 0
-    s = 0
-    u.birthday = datetime(y,m,d,h,M,s)
-    ts = DateTimeScale("year", datetime(2000,1,1), datetime(2000,12,31))
+    u = User("default")
+    if not u.get_birthday():
+        print("Not a real date.")
+        return
+    if not u.get_longevity():
+        print("Not currently a realistic human life span.")
+        return
+    ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
     while 1:
         proportional_time = ts.proportional_time(u.percent_alive())
         print proportional_time.strftime("%b %d %I:%M:%S %p"), \

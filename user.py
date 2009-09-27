@@ -8,16 +8,19 @@ from datetime import *
 def duration_in_secs(duration):
     days = duration.days
     secs = duration.seconds
-    return (days * 24 * 60 * 60 + secs)
+    return days * 24 * 60 * 60 + secs
 
 class User:
     """The user object."""
-    def __init__(self, name):
+    def __init__(self, name, birthday=datetime.now(),
+                 longevity=80.0,):
         self.name = name
+        self.birthday=birthday
+        self.longevity=longevity
 
-    birthday = datetime.now()
-    longevity = 80.0
     seconds_per_year = 365 * 24 * 60 * 60
+    min_age = 1
+    max_age = 130
 
     def time_alive(self):
         return datetime.now() - self.birthday
@@ -35,3 +38,29 @@ class User:
     def percent_alive(self):
         return float(self.seconds_alive()) / float(self.seconds_longevity())
 
+    def get_birthday(self, get_time=False):
+        y = int(raw_input("Enter year of birth: "))
+        m = int(raw_input("Enter month of birth [1-12]: "))
+        d = int(raw_input("Day of birth [1-31]: "))
+        if get_time:
+            h = int(raw_input("Enter hour of birth: "))
+            M = int(raw_input("Enter minute of birth: "))
+            s = int(raw_input("Enter second of birth: "))
+        else:
+            # assume born at MN
+            h = 0
+            M = 0
+            s = 0
+        if (m not in range(1,12) or d not in range(1,31)
+            or h not in range(1,24) or M not in range(1,6) or
+            s not in range(1,60)):
+            return False
+        self.birthday = datetime(y,m,d,h,M,s)
+        return True
+
+    def get_longevity(self):
+        self.longevity = float(raw_input("Enter expected longevity in years "))
+        return self.longevity >= self.min_age and \
+            self.longevity <= self.max_age
+
+    
