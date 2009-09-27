@@ -30,7 +30,7 @@ def parse_options():
                       help="show an example of how morbidmeter works")
     parser.add_option("-i", "--interactive",
                       action="store_true", dest="interactive",
-                      default = False,
+                      default=False,
                       help="run morbidmeter in interactive mode")
     parser.add_option("-t", "--timescale", action="store",
                       type="string", dest="timescale",
@@ -38,11 +38,15 @@ def parse_options():
     parser.add_option("-u", "--user", action="store",
                       type="string", dest="user",
                       help="select user, new if blank")
+    parser.add_option("-z", "--zen", action="store_true",
+                      dest="zen", default=False)
     (options, args) = parser.parse_args()
     if (options.example):
         example()
     elif (options.interactive):
         interactive()
+    elif (options.zen):
+        zen()
     else:
         print "Right now morbidmeter doesn't do much, but rerun as: "
         print program_invocation + " --example"
@@ -67,6 +71,9 @@ def main():
     parse_options()
     create_config()
     read_config()
+
+def zen():
+    print "Time is running out -- MorbidMeter tells you how fast..."
 
 def example():
     print "Run python mm.py --interactive for an example."
