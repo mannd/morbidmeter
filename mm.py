@@ -34,6 +34,9 @@ def parse_options():
                       action="store_true", dest="interactive",
                       default=False,
                       help="run morbidmeter in interactive mode")
+    parser.add_option("--gui", 
+                      action="store_true", dest="gui", default=False,
+                      help="run gui version of program")
     parser.add_option("-t", "--timescale", action="store",
                       type="string", dest="timescale",
                       help="set time scale")
@@ -47,6 +50,8 @@ def parse_options():
         example()
     elif (options.interactive):
         interactive()
+    elif (options.gui):
+        gui()
     elif (options.zen):
         zen()
     else:
@@ -54,6 +59,8 @@ def parse_options():
         print program_invocation + " --example"
         print "or as "
         print program_invocation + " --interactive"
+        print "or as "
+        print program_invocation + " --gui"
         print "to see what it will do."
 
 def create_config():
@@ -106,12 +113,26 @@ def interactive():
     ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
 
     # continuously update console
-    # while True:
-    #     proportional_time = ts.proportional_time(u.percent_alive())
-    #     print proportional_time.strftime("%b %d %I:%M:%S %p"), \
-    #         proportional_time.microsecond / 1000, "msec"
-    #     sleep(2)
-    
+    while True:
+        proportional_time = ts.proportional_time(u.percent_alive())
+        print proportional_time.strftime("%b %d %I:%M:%S %p"), \
+            proportional_time.microsecond / 1000, "msec"
+        sleep(2)
+
+def gui():    
+    print "MorbidMeter will show your calculated date and time"
+    print "assuming your life was compressed to a single year."
+    print "MorbidMeter will appear in a small window."
+
+    u = User("default")
+    if not u.get_birthday():
+        print("Not a real date.")
+        return
+    if not u.get_longevity():
+        print("Not currently a realistic human life span.")
+        return
+    ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
+
     # one time gui window display
     proportional_time = ts.proportional_time(u.percent_alive())
     formatted_time = str(proportional_time.strftime("%b %d %I:%M:%S %p")) + \

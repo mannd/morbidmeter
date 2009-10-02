@@ -10,4 +10,6 @@ class SimpleWindow(Frame):
         Frame.__init__(self, parent)
         label = Label(self, text=text)
         label.pack()
-
+        parent.title("MorbidMeter")
+        # setting icon doesn't seem to work in Linux :(
+        #parent.iconbitmap('mm.ico')
