@@ -97,6 +97,9 @@ def example():
     print "today would be", (proportionaldate).strftime("%b %d")
     print "If your life took place over a single day,"
     print "the time would be", (proportionaltime).strftime("%I:%M:%S %p")
+
+def get_proportional_time(ts, u):
+    return ts.proportional_time(u.percent_alive())
     
 def interactive():
     print "MorbidMeter will output your calculated date and time"
@@ -110,9 +113,9 @@ def interactive():
 
     # continuously update console
     while True:
-        proportional_time = ts.proportional_time(u.percent_alive())
+        proportional_time = get_proportional_time(ts, u)
         print proportional_time.strftime("%b %d %I:%M:%S %p"), \
-            proportional_time.microsecond / 1000, "msec"
+             proportional_time.microsecond / 1000, "msec"
         sleep(2)
 
 def gui():    
@@ -126,12 +129,9 @@ def gui():
     ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
 
     # one time gui window display
-    proportional_time = ts.proportional_time(u.percent_alive())
-    formatted_time = str(proportional_time.strftime("%b %d %I:%M:%S %p")) + \
-            " " + str(proportional_time.microsecond / 1000) +  " msec"
-
     root = Tk()
-    window = SimpleWindow(parent=root, text=formatted_time)
+    window = SimpleWindow(parent=root, 
+                          callback=get_proportional_time(ts, u))
     window.pack()
     window.mainloop()
     
