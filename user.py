@@ -63,4 +63,12 @@ class User:
         return self.longevity >= self.min_age and \
             self.longevity <= self.max_age
 
-    
+    def get_data(self):
+        if not self.get_birthday():
+            print "Not a real date."
+            return False
+        if not self.get_longevity():
+            print("Not currently a realistic human life span.")
+            return False
+        return True
+

@@ -104,11 +104,7 @@ def interactive():
     print "MorbidMeter will update every 2 seconds."
     print "Press Control-C to stop."
     u = User("default")
-    if not u.get_birthday():
-        print("Not a real date.")
-        return
-    if not u.get_longevity():
-        print("Not currently a realistic human life span.")
+    if not u.get_data():
         return
     ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
 
@@ -125,11 +121,7 @@ def gui():
     print "MorbidMeter will appear in a small window."
 
     u = User("default")
-    if not u.get_birthday():
-        print("Not a real date.")
-        return
-    if not u.get_longevity():
-        print("Not currently a realistic human life span.")
+    if not u.get_data():
         return
     ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
 
