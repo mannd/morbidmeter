@@ -1,5 +1,32 @@
-MorbidMeter is a perverse program that is intended to lend perspective to one's life.
+MorbidMeter is a perverse program that is intended to lend perspective
+to one's life.
 
-The program takes your date of birth, your estimated life-span, today's date, and a unit of time (year, hour, minute, month, phase of the moon, maybe others) and generates where (when?) you are right now in that time unit.  
+The program takes your date of birth, your estimated life-span,
+today's date, and a unit of time (year, hour, minute, month, phase of
+the moon, maybe others) and generates where (when?) you are right now
+in that time unit.
 
-The anticipated gui part of MorbidMeter will display a clock/calendar/etc. that will updated in realtime (albeit slowly --thank goodness) to remind you that nothing lasts forever.  Not even you.
+The gui part of MorbidMeter will display a
+clock/calendar/etc. that will updated in realtime (albeit slowly
+--thank goodness) to remind you that nothing lasts forever.  Not even
+you.
+
+Bugs:  Right now MorbidMeter only uses a single year timescale, does
+not store user data between sessions, and displays error messages when
+terminating.  However, the simple gui works.  Try
+
+./mm --gui 
+
+or 
+
+./mm --gui --msec
+
+in Linux or
+
+python mm.py --gui 
+
+or 
+
+python mm.py --gui --msec
+
+in Windows.

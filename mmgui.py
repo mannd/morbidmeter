@@ -4,28 +4,40 @@
 # license - GPL v 3 or later
 
 from Tkinter import *
+from threading import *
+from time import sleep
+from timescale import *
+from user import *
 
 class SimpleWindow(Frame):
-    def __init__(self, parent, callback):
+    def __init__(self, parent, ts, user, show_msec=True):
         Frame.__init__(self, parent)
-        self.callback = callback
+        parent.title("MorbidMeter")
+        self.show_msec = show_msec
+        self.ts = ts
+        self.user=user
         self.v = StringVar()
         self.v.set(self.format_time())
-        label = Label(self, textvariable=self.v)
-        label.pack()
-        parent.title("MorbidMeter")
+        self.label = Label(self, textvariable=self.v)
+        self.update_label()
         # setting icon doesn't seem to work in Linux :(
-        #parent.iconbitmap('mm.ico')
-        self.listenID = self.after(500, self.test_label)
+        # iconimage = parent.PhotoImage(file="skull.bmp")
+        # iconlabel = parent.Label(self, image=iconimage)
+        # parent.iconwindow(iconlabel)
+        t = Timer(1.0, self.update_label)
+        t.start()
+
+    def update_label(self):
+        self.v.set(self.format_time())
+        self.label.textvariable = self.v
+        self.label.pack()
+        t = Timer(1.0, self.update_label)
+        t.start()
 
     def format_time(self):
-        t = self.callback
-        return t.strftime("%b %d %I:%M:%S %p"), \
-             t.microsecond / 1000, "msec"
-
-
-    def test_label(self):
-        self.v.set(self.format_time())
-
-    def update(self):
-        self.listenID = self.after(500, self.test_label)
+        t = self.ts.proportional_time(self.user.percent_alive())
+        if self.show_msec:
+            return t.strftime("%b %d %I:%M:%S %p") + \
+                " " + str(t.microsecond / 1000).zfill(3) + " msec"
+        else:
+            return t.strftime("        %b %d %I:%M:%S %p        ")

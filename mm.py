@@ -27,9 +27,6 @@ def parse_options():
         program_invocation = "./mm"
     usage = "usage: " + program_invocation + " [options]"
     parser = OptionParser(usage=usage, version=program_name + " version 0.1")
-    parser.add_option("--example",
-                      action="store_true", dest="example", default=False,
-                      help="show an example of how morbidmeter works")
     parser.add_option("-i", "--interactive",
                       action="store_true", dest="interactive",
                       default=False,
@@ -37,6 +34,13 @@ def parse_options():
     parser.add_option("--gui", 
                       action="store_true", dest="gui", default=False,
                       help="run gui version of program")
+    parser.add_option("--msec",
+                      action="store_true", dest="show_msec",
+                      default=False,
+                      help="show msec (when available)")
+    parser.add_option("--example",
+                      action="store_true", dest="example", default=False,
+                      help="show an example of how morbidmeter works")
     parser.add_option("-t", "--timescale", action="store",
                       type="string", dest="timescale",
                       help="set time scale")
@@ -51,9 +55,11 @@ def parse_options():
     elif (options.interactive):
         interactive()
     elif (options.gui):
-        gui()
+        gui(options.show_msec)
     elif (options.zen):
         zen()
+    elif (options.timescale):
+        print "Timescale doesn't do anything yet."
     else:
         print "Right now morbidmeter doesn't do much, but rerun as: "
         print program_invocation + " --example"
@@ -118,7 +124,7 @@ def interactive():
              proportional_time.microsecond / 1000, "msec"
         sleep(2)
 
-def gui():    
+def gui(show_msec):    
     print "MorbidMeter will show your calculated date and time"
     print "assuming your life was compressed to a single year."
     print "MorbidMeter will appear in a small window."
@@ -131,7 +137,7 @@ def gui():
     # one time gui window display
     root = Tk()
     window = SimpleWindow(parent=root, 
-                          callback=get_proportional_time(ts, u))
+                          user=u, ts=ts, show_msec=show_msec)
     window.pack()
     window.mainloop()
     
