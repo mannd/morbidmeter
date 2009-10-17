@@ -24,15 +24,13 @@ class SimpleWindow(Frame):
         # iconimage = parent.PhotoImage(file="skull.bmp")
         # iconlabel = parent.Label(self, image=iconimage)
         # parent.iconwindow(iconlabel)
-        t = Timer(1.0, self.update_label)
-        t.start()
+        
 
     def update_label(self):
         self.v.set(self.format_time())
         self.label.textvariable = self.v
         self.label.pack()
-        t = Timer(1.0, self.update_label)
-        t.start()
+        self.label.after(1000, self.update_label)
 
     def format_time(self):
         t = self.ts.proportional_time(self.user.percent_alive())
