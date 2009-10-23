@@ -126,8 +126,8 @@ def interactive():
         sleep(2)
 
 def gui(show_msec, timescale):    
-    print "MorbidMeter will show your calculated date and time"
-    print "assuming your life was compressed to a single year."
+    print "MorbidMeter will show the calculated date and/or time"
+    print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will appear in a small window."
 
     u = User("default")
