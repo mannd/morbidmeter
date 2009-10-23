@@ -5,7 +5,7 @@ The program takes your date of birth, your estimated life-span,
 today's date, and a unit of time (year, hour, minute, month, phase of
 the moon, maybe others) and generates where (when?) you are right now
 in that time unit.  Use a life expectancy calculator such as this one
-(http://www.livingto100.com/) to figure out how long you should live
+(http://www.livingto100.com) to figure out how long you should live
 (or just make up the number).
 
 The gui part of MorbidMeter displays a clock/calendar/etc. that is
