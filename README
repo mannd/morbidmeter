@@ -4,29 +4,30 @@ to one's life.
 The program takes your date of birth, your estimated life-span,
 today's date, and a unit of time (year, hour, minute, month, phase of
 the moon, maybe others) and generates where (when?) you are right now
-in that time unit.
+in that time unit.  Use a life expectancy calculator such as this one
+(http://www.livingto100.com/) to figure out how long you should live
+(or just make up the number).
 
-The gui part of MorbidMeter will display a
-clock/calendar/etc. that will updated in realtime (albeit slowly
---thank goodness) to remind you that nothing lasts forever.  Not even
-you.
+The gui part of MorbidMeter displays a clock/calendar/etc. that is
+updated in realtime (albeit slowly --thank goodness) to remind you
+that nothing lasts forever.  Not even you.
 
-Bugs:  Right now MorbidMeter only uses a single year timescale, does
-not store user data between sessions, and displays error messages when
-terminating.  However, the simple gui works.  Try
+Bugs: Right now MorbidMeter does not store user data between sessions,
+and has no fancy graphics.  However, the simple gui does work.  Try
 
-./mm --gui 
-
-or 
-
-./mm --gui --msec
+./mm --gui
 
 in Linux or
 
-python mm.py --gui 
-
-or 
-
-python mm.py --gui --msec
+python mm.py --gui
 
 in Windows.
+
+The default timescale is one year.  Set the timescale with the -t
+switch, e.g.
+
+./mm --gui -t day
+
+Supported timescales so far are year, day, and hour.  Add the --msec
+switch to display milliseconds (if you really want to be depressed --
+they go by fairly quickly).
