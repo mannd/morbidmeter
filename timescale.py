@@ -8,10 +8,11 @@ from user import duration_in_secs
 
 class TimeScale:
     """Time scale of measure used to calibrate MorbidMeter"""
-    def __init__(self, name, minimum=0, maximum=100):
+    def __init__(self, name, minimum=0, maximum=100, format_string=""):
         self.name = name
         self.minimum = minimum
         self.maximum = maximum
+        self.format_string = format_string
 
     def duration(self):
         return self.maximum - self.minimum

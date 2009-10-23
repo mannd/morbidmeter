@@ -8,7 +8,6 @@ import ConfigParser
 import os
 from datetime import *
 from user import User
-from user import duration_in_secs
 from timescale import TimeScale, DateTimeScale
 from time import sleep
 from Tkinter import *
@@ -42,7 +41,7 @@ def parse_options():
                       action="store_true", dest="example", default=False,
                       help="show an example of how morbidmeter works")
     parser.add_option("-t", "--timescale", action="store",
-                      type="string", dest="timescale",
+                      type="string", dest="timescale", default="year",
                       help="set time scale")
     parser.add_option("-u", "--user", action="store",
                       type="string", dest="user",
@@ -50,16 +49,18 @@ def parse_options():
     parser.add_option("-z", "--zen", action="store_true",
                       dest="zen", default=False)
     (options, args) = parser.parse_args()
+    # check available timescales
+    if (options.timescale not in ["year", "day", "hour"]):
+        print options.timescale, "not supported."
+        return
     if (options.example):
         example()
     elif (options.interactive):
         interactive()
     elif (options.gui):
-        gui(options.show_msec)
+        gui(options.show_msec, options.timescale)
     elif (options.zen):
         zen()
-    elif (options.timescale):
-        print "Timescale doesn't do anything yet."
     else:
         print "Right now morbidmeter doesn't do much, but rerun as: "
         print program_invocation + " --example"
@@ -124,7 +125,7 @@ def interactive():
              proportional_time.microsecond / 1000, "msec"
         sleep(2)
 
-def gui(show_msec):    
+def gui(show_msec, timescale):    
     print "MorbidMeter will show your calculated date and time"
     print "assuming your life was compressed to a single year."
     print "MorbidMeter will appear in a small window."
@@ -132,12 +133,27 @@ def gui(show_msec):
     u = User("default")
     if not u.get_data():
         return
-    ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
-
+    if (timescale == "year"):
+        ts = DateTimeScale("year", 
+                           datetime(2000,1,1), datetime(2001,1,1),
+                           "%b %d %I:%M:%S %p")
+    elif (timescale == "day"):
+        ts = DateTimeScale("day",
+                           datetime(2000,1,1), datetime(2000, 1, 2),
+                           "%I:%M:%S %p")
+    elif (timescale == "hour"):
+        ts = DateTimeScale("hour",
+                           datetime(2000, 1, 1, 0, 0, 0),
+                           datetime(2000, 1, 1, 1, 0, 0),
+                           "%I:%M:%S")
+    else:
+        print "Unsupported timescale."
+        return
     # one time gui window display
     root = Tk()
     window = SimpleWindow(parent=root, 
-                          user=u, ts=ts, show_msec=show_msec)
+                          user=u, ts=ts, 
+                          show_msec=show_msec)
     window.pack()
     window.mainloop()
     
