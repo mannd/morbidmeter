@@ -43,6 +43,9 @@ def parse_options():
     parser.add_option("-t", "--timescale", action="store",
                       type="string", dest="timescale", default="year",
                       help="set time scale")
+    parser.add_option("-i", "--interval", action="store",
+                      type="int", dest="interval", default=1000,
+                      help="set update time interval in msec")
     parser.add_option("-u", "--user", action="store",
                       type="string", dest="user",
                       help="select user, new if blank")
@@ -56,9 +59,9 @@ def parse_options():
     if (options.example):
         example()
     elif (options.interactive):
-        interactive()
+        interactive(options.show_msec, options.timescale, options.interval)
     elif (options.gui):
-        gui(options.show_msec, options.timescale)
+        gui(options.show_msec, options.timescale, options.interval)
     elif (options.zen):
         zen()
     else:
@@ -105,27 +108,44 @@ def example():
     print "If your life took place over a single day,"
     print "the time would be", (proportionaltime).strftime("%I:%M:%S %p")
 
-def get_proportional_time(ts, u):
-    return ts.proportional_time(u.percent_alive())
+def get_timescale(timescale):
+    if (timescale == "year"):
+        return DateTimeScale("year", 
+                           datetime(2000,1,1), datetime(2001,1,1),
+                           "%b %d %I:%M:%S %p")
+    elif (timescale == "day"):
+        return DateTimeScale("day",
+                           datetime(2000,1,1), datetime(2000, 1, 2),
+                           "%I:%M:%S %p")
+    elif (timescale == "hour"):
+        return DateTimeScale("hour",
+                           datetime(2000, 1, 1, 0, 0, 0),
+                           datetime(2000, 1, 1, 1, 0, 0),
+                           "%I:%M:%S")
+    else:
+        return None
     
-def interactive():
+    
+def interactive(show_msec, timescale, interval):
     print "MorbidMeter will output your calculated date and time"
-    print "assuming your life was compressed to a single year."
-    print "MorbidMeter will update every 2 seconds."
+    print "assuming your life is compressed to a single", timescale + "."
+    print "MorbidMeter will update every", interval, "msec."
     print "Press Control-C to stop."
     u = User("default")
     if not u.get_data():
         return
-    ts = DateTimeScale("year", datetime(2000,1,1), datetime(2001,1,1))
-
+    ts = get_timescale(timescale)
+    if ts is None:
+        print "Unsupported timescale."
+        return
     # continuously update console
     while True:
-        proportional_time = get_proportional_time(ts, u)
-        print proportional_time.strftime("%b %d %I:%M:%S %p"), \
+        proportional_time = ts.proportional_time(u.percent_alive())
+        print proportional_time.strftime(ts.format_string), \
              proportional_time.microsecond / 1000, "msec"
-        sleep(2)
+        sleep(interval / 1000)
 
-def gui(show_msec, timescale):    
+def gui(show_msec, timescale, interval):    
     print "MorbidMeter will show the calculated date and/or time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will appear in a small window."
@@ -133,27 +153,14 @@ def gui(show_msec, timescale):
     u = User("default")
     if not u.get_data():
         return
-    if (timescale == "year"):
-        ts = DateTimeScale("year", 
-                           datetime(2000,1,1), datetime(2001,1,1),
-                           "%b %d %I:%M:%S %p")
-    elif (timescale == "day"):
-        ts = DateTimeScale("day",
-                           datetime(2000,1,1), datetime(2000, 1, 2),
-                           "%I:%M:%S %p")
-    elif (timescale == "hour"):
-        ts = DateTimeScale("hour",
-                           datetime(2000, 1, 1, 0, 0, 0),
-                           datetime(2000, 1, 1, 1, 0, 0),
-                           "%I:%M:%S")
-    else:
+    ts = get_timescale(timescale)
+    if ts is None:
         print "Unsupported timescale."
         return
-    # one time gui window display
     root = Tk()
     window = SimpleWindow(parent=root, 
                           user=u, ts=ts, 
-                          show_msec=show_msec)
+                          show_msec=show_msec, update_interval=interval)
     window.pack()
     window.mainloop()
     
