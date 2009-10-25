@@ -43,7 +43,7 @@ def parse_options():
     parser.add_option("-t", "--timescale", action="store",
                       type="string", dest="timescale", default="year",
                       help="set time scale")
-    parser.add_option("-i", "--interval", action="store",
+    parser.add_option("--interval", action="store",
                       type="int", dest="interval", default=1000,
                       help="set update time interval in msec")
     parser.add_option("-u", "--user", action="store",
