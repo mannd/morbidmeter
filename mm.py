@@ -49,6 +49,9 @@ def parse_options():
     parser.add_option("-u", "--user", action="store",
                       type="string", dest="user",
                       help="select user, new if blank")
+    parser.add_option("--reset", action="store_true",
+                      dest="reset_user", default=False,
+                      help="reset user information")
     parser.add_option("-z", "--zen", action="store_true",
                       dest="zen", default=False)
     (options, args) = parser.parse_args()
@@ -59,9 +62,11 @@ def parse_options():
     if (options.example):
         example()
     elif (options.interactive):
-        interactive(options.show_msec, options.timescale, options.interval)
+        interactive(options.show_msec, options.timescale, 
+                    options.interval, options.reset_user)
     elif (options.gui):
-        gui(options.show_msec, options.timescale, options.interval)
+        gui(options.show_msec, options.timescale, 
+            options.interval, options.reset_user)
     elif (options.zen):
         zen()
     else:
@@ -86,10 +91,39 @@ def read_config():
     config.read('mm.conf')
     user = config.get('DefaultUser', 'name')
 
+def write_last_user(name, birthday, longevity):
+    config = ConfigParser.RawConfigParser()
+    config.add_section('LastUser')
+    config.set('LastUser', 'longevity', longevity)
+    config.set('LastUser', 'day', birthday.day)
+    config.set('LastUser', 'month', birthday.month)
+    config.set('LastUser', 'year', birthday.year)
+    config.set('LastUser', 'name', name)
+    configfile = open('mm.conf', 'wb')
+    config.write(configfile)
+
+def read_last_user():
+    if (not os.path.exists('mm.conf')):
+        return None
+    config = ConfigParser.RawConfigParser()
+    config.read('mm.conf')
+    u = User("Default")
+    u.name = config.get('LastUser', 'name')
+    y = int(config.get('LastUser', 'year'))
+    m = int(config.get('LastUser', 'month'))
+    d = int(config.get('LastUser', 'day'))
+    u.longevity = float(config.get('LastUser', 'longevity'))
+    # TODO handle times here (times are allowed in User)
+    u.birthday = datetime(y,m,d,0,0,0)
+    if u.name != 'default':
+        return None
+    else:
+        return u
+
 def main():
     parse_options()
-    create_config()
-    read_config()
+    # create_config()
+    # read_config()
 
 def zen():
     print "Time is running out -- MorbidMeter tells you how fast..."
@@ -125,16 +159,26 @@ def get_timescale(timescale):
     else:
         return None
     
-    
-def interactive(show_msec, timescale, interval):
+def get_user_timescale(timescale, new_user):
+    if (not new_user):
+        u = read_last_user()
+    if (new_user or u is None):
+        u = User("default")
+        if not u.get_data():
+            return (None, None)
+        write_last_user(u.name, u.birthday, u.longevity)
+    ts = get_timescale(timescale)
+    return (u, ts)
+
+def interactive(show_msec, timescale, interval, reset_user):
     print "MorbidMeter will output your calculated date and time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will update every", interval, "msec."
     print "Press Control-C to stop."
-    u = User("default")
-    if not u.get_data():
+    (u, ts) = get_user_timescale(timescale, reset_user)
+    if u is None:
+        print "Can't set up user."
         return
-    ts = get_timescale(timescale)
     if ts is None:
         print "Unsupported timescale."
         return
@@ -145,15 +189,15 @@ def interactive(show_msec, timescale, interval):
              proportional_time.microsecond / 1000, "msec"
         sleep(interval / 1000)
 
-def gui(show_msec, timescale, interval):    
+def gui(show_msec, timescale, interval, reset_user):    
     print "MorbidMeter will show the calculated date and/or time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will appear in a small window."
 
-    u = User("default")
-    if not u.get_data():
+    (u, ts) = get_user_timescale(timescale, reset_user)
+    if u is None:
+        print "Can't set up user."
         return
-    ts = get_timescale(timescale)
     if ts is None:
         print "Unsupported timescale."
         return
