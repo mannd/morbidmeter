@@ -12,8 +12,8 @@ The gui part of MorbidMeter displays a clock/calendar/etc. that is
 updated in realtime (albeit slowly --thank goodness) to remind you
 that nothing lasts forever.  Not even you.
 
-Bugs: Right now MorbidMeter does not store user data between sessions,
-and has no fancy graphics.  However, the simple gui does work.  Try
+Bugs: Right now MorbidMeter has no fancy graphics.  However, the
+simple gui does work.  Try
 
 ./mm --gui
 
@@ -31,3 +31,6 @@ switch, e.g.
 Supported timescales so far are year, day, and hour.  Add the --msec
 switch to display milliseconds (if you really want to be depressed --
 they go by fairly quickly).
+
+MorbidMeter remembers user data between invocations.  add the --reset
+switch to change user data.

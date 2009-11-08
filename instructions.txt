@@ -1,0 +1,55 @@
+- Installation
+  - Requires Python on your system.
+  - Python should be present already if you run Linux or Mac OS X.
+  - Windows users will probably have to download Python: 
+    - http://www.python.org/download/
+  - Python version should be 2.x, do not use the 3.x version.
+- Starting the program
+  - Linux or Mac OS X
+    - from the command line type
+      ./mm
+  - Windows
+    - in a DOS command box type
+      python mm.py
+    - optionally create a shortcut to MorbidMeter, you can use the
+      included skull icon for your shortcut.
+  - You will want to include some command options described below.
+- Command line options
+  - -i or --interactive runs MorbidMeter on the command line without a gui.
+  - --gui sends the output to a small window on your desktop.
+  - --msec adds milliseconds to the output.
+  - -t or --timescale sets the timescale used.  The current
+    timescales are:
+    - year
+    - day
+    - hour
+    For example, python mm.py -t year or python mm.py --timescale=day
+    will set the timescale to a day.  Default timescale is a year.
+  - --interval sets the update interval in milliseconds.  Default is
+    1000 msec (= 1 sec).  E.g. python mm.py --interval=2000 sets the
+    update interval to 2 sec.
+  - --reset asks for new user data.  Otherwise MorbidMeter reuses the
+    last set of user data.
+- Examples
+  - First time usage
+    python mm.py will prompt you to rerun with either the --gui or
+    --interactive command switch.  The first time you run MorbidMeter
+    you should use:
+    python mm.py --gui or python mm.py --interactive
+  - Select timescale
+    The default timescale is a year, you don't have to do anything
+    special to use the year timescale.  For the other timescales, use
+    the timescale switch, e.g.:
+    python mm.py --gui --timescale=day
+  - Entering birthdate and longevity information.  
+    Try the website (http://www.livingto100.com) to figure out how
+    long you should live. Follow the prompts to do this.
+  - Subsequent usage
+    rerunning mm.py will reuse the date information already entered.
+    You will still need to repeat the --gui and/or --timescale
+    switches on the command line each time your start the
+    program. E.g.:
+    python mm.py --gui
+  - Resetting birthdate and longevity information.
+    use python mm.py --reset --gui to restart the gui version with new
+    birth and death information. 
