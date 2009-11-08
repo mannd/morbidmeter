@@ -19,13 +19,14 @@ def os_is_windows():
 def parse_options():
     program_name = "MorbidMeter"
     short_program_name = "mm"
-    version = "0.1"
+    version = "0.1.1"
     if os_is_windows():
         program_invocation = "python " + short_program_name + ".py"
     else:
         program_invocation = "./mm"
     usage = "usage: " + program_invocation + " [options]"
-    parser = OptionParser(usage=usage, version=program_name + " version 0.1")
+    parser = OptionParser(usage=usage, version=program_name + " version " +
+                          version)
     parser.add_option("-i", "--interactive",
                       action="store_true", dest="interactive",
                       default=False,
