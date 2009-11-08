@@ -38,6 +38,13 @@ class User:
     def percent_alive(self):
         return float(self.seconds_alive()) / float(self.seconds_longevity())
 
+    def test_birthday(self, month, day, hour=0, minute=0, sec=0):
+        return (month in range(1,13) and
+                day in range(1,32) and
+                hour in range(0,24) and
+                minute in range(0,60) and
+                sec in range(0,60))
+
     def get_birthday(self, get_time=False):
         y = int(raw_input("Enter year of birth: "))
         m = int(raw_input("Enter month of birth [1-12]: "))
@@ -51,9 +58,7 @@ class User:
             h = 0
             M = 0
             s = 0
-        if (m not in range(1,13) or d not in range(1,32)
-            or h not in range(0,25) or M not in range(0,61) or
-            s not in range(0,61)):
+        if not self.test_birthday(m, d, h, M, s):
             return False
         self.birthday = datetime(y,m,d,h,M,s)
         return True
