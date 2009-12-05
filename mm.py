@@ -12,6 +12,16 @@ from timescale import TimeScale, DateTimeScale
 from time import sleep
 from Tkinter import *
 from mmgui import SimpleWindow
+import thread
+
+#global for threading
+terminate_it = 0
+
+def stop_it():
+    global terminate_it
+    while True:
+        if raw_input() == 'q':
+            terminate_it = 1
 
 def os_is_windows():
     return os.name == 'nt'
@@ -175,7 +185,7 @@ def interactive(show_msec, timescale, interval, reset_user):
     print "MorbidMeter will output your calculated date and time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will update every", interval, "msec."
-    print "Press Control-C to stop."
+    print "Press 'q' and then 'RETURN' to stop."
     (u, ts) = get_user_timescale(timescale, reset_user)
     if u is None:
         print "Can't set up user."
@@ -184,7 +194,9 @@ def interactive(show_msec, timescale, interval, reset_user):
         print "Unsupported timescale."
         return
     # continuously update console
-    while True:
+    global terminate_it
+    thread.start_new_thread(stop_it, ())
+    while terminate_it == 0:
         proportional_time = ts.proportional_time(u.percent_alive())
         print proportional_time.strftime(ts.format_string), \
              proportional_time.microsecond / 1000, "msec"
