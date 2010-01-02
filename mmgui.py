@@ -27,6 +27,7 @@ class SimpleWindow(Frame):
         # iconimage = PhotoImage(file="skull.xpm")
         # iconlabel = parent.Label(self, image=iconimage)
         # parent.iconwindow(iconimage)
+        print parent.minsize(250,0) 
 
     def update_label(self):
         self.v.set(self.format_time())
@@ -40,5 +41,5 @@ class SimpleWindow(Frame):
             return t.strftime(self.ts.format_string) + \
                 " " + str(t.microsecond / 1000).zfill(3) + " msec"
         else:
-            return t.strftime("       " + self.ts.format_string 
-                              + "        ")
+            return t.strftime(" " + self.ts.format_string 
+                              + " ")

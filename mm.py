@@ -67,7 +67,7 @@ def parse_options():
                       dest="zen", default=False)
     (options, args) = parser.parse_args()
     # check available timescales
-    if (options.timescale not in ["year", "day", "hour"]):
+    if (options.timescale not in ["year", "day", "hour", "month"]):
         print options.timescale, "not supported."
         return
     if (options.example):
@@ -167,6 +167,10 @@ def get_timescale(timescale):
                            datetime(2000, 1, 1, 0, 0, 0),
                            datetime(2000, 1, 1, 1, 0, 0),
                            "%I:%M:%S")
+    elif (timescale == "month"):
+        return DateTimeScale("month",
+                             datetime(2000,1,1), datetime(2000,2,1),
+                             "%b %d %I:%M:%S %p")
     else:
         return None
     
@@ -216,7 +220,7 @@ def gui(show_msec, timescale, interval, reset_user):
         return
     root = Tk()
     window = SimpleWindow(parent=root, 
-                          user=u, ts=ts, 
+                          user=u, ts=ts,
                           show_msec=show_msec, update_interval=interval)
     window.pack()
     window.mainloop()
