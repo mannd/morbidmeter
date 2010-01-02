@@ -24,10 +24,9 @@ class SimpleWindow(Frame):
         self.label = Label(self, textvariable=self.v)
         self.update_label()
         # setting icon doesn't seem to work in Linux :(
-        # iconimage = parent.PhotoImage(file="skull.bmp")
+        # iconimage = PhotoImage(file="skull.xpm")
         # iconlabel = parent.Label(self, image=iconimage)
-        # parent.iconwindow(iconlabel)
-        
+        # parent.iconwindow(iconimage)
 
     def update_label(self):
         self.v.set(self.format_time())

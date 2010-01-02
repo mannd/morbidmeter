@@ -5,9 +5,15 @@
 
 import os, sys
 from Tkinter import *
+import user, timescale
+from mm import read_last_user
 
 def start_mm():
+    save_config()
     os.execvp('python', create_commandline())
+
+def save_config():
+    pass
 
 def cancel():
     sys.exit(0)
@@ -15,6 +21,10 @@ def cancel():
 def create_window():
     window = Tk()
     window.title("MorbidMeter Configuration")
+    user = read_last_user()
+    name_label = Label(text='Name ' + user.name)
+    name_label.pack()
+    birthday_label = Label(text='Birthday ' + user.birthday)
     start_button = Button(window, text='Start', command=start_mm)
     cancel_button = Button(window, text='Cancel', command=cancel)
     start_button.pack(side=LEFT)
