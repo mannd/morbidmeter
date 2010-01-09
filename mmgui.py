@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# mmgui - Class for gui display  in MorbidMeter
+# mmgui - Class for gui display in MorbidMeter
 # Copyright (c) 2009 EP Studios, Inc.
 # license - GPL v 3 or later
 
@@ -8,6 +8,7 @@ from threading import *
 from time import sleep
 from timescale import *
 from user import *
+from mmshared import os_is_windows
 
 class SimpleWindow(Frame):
     def __init__(self, parent, ts, user,
@@ -23,10 +24,14 @@ class SimpleWindow(Frame):
         self.v.set(self.format_time())
         self.label = Label(self, textvariable=self.v)
         self.update_label()
-        # setting icon doesn't seem to work in Linux :(
-        # iconimage = PhotoImage(file="skull.xpm")
-        # iconlabel = parent.Label(self, image=iconimage)
-        # parent.iconwindow(iconimage)
+        if os_is_windows():
+            icon_file = 'skull.ico'
+        else:
+            icon_file = '@skull.xbm'
+        try:
+            parent.iconbitmap(icon_file)
+        except TclError:
+            print 'No ico file found.'
         parent.minsize(250,0) 
 
     def update_label(self):
