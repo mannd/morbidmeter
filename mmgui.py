@@ -24,10 +24,11 @@ class SimpleWindow(Frame):
         self.v.set(self.format_time())
         self.label = Label(self, textvariable=self.v)
         self.update_label()
+        icon_name = 'skull'
         if os_is_windows():
-            icon_file = 'skull.ico'
+            icon_file = icon_name + '.ico'
         else:
-            icon_file = '@skull.xbm'
+            icon_file = '@' + icon_name + '.xbm'
         try:
             parent.iconbitmap(icon_file)
         except TclError:

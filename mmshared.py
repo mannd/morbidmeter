@@ -3,7 +3,7 @@
 # Copyright (c) 2010 EP Studios, Inc.
 # license - GPL v 3 or later
 
-import os
+import sys
 
 def os_is_windows():
-    return os.name == 'nt'
+    return sys.platform[:3]  == 'win'
