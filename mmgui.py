@@ -27,7 +27,7 @@ class SimpleWindow(Frame):
         # iconimage = PhotoImage(file="skull.xpm")
         # iconlabel = parent.Label(self, image=iconimage)
         # parent.iconwindow(iconimage)
-        print parent.minsize(250,0) 
+        parent.minsize(250,0) 
 
     def update_label(self):
         self.v.set(self.format_time())

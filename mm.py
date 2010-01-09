@@ -210,7 +210,7 @@ def gui(show_msec, timescale, interval, reset_user):
     print "MorbidMeter will show the calculated date and/or time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will appear in a small window."
-
+    
     (u, ts) = get_user_timescale(timescale, reset_user)
     if u is None:
         print "Can't set up user."
@@ -219,6 +219,7 @@ def gui(show_msec, timescale, interval, reset_user):
         print "Unsupported timescale."
         return
     root = Tk()
+    root.bell()
     window = SimpleWindow(parent=root, 
                           user=u, ts=ts,
                           show_msec=show_msec, update_interval=interval)
