@@ -221,7 +221,7 @@ def gui(show_msec, timescale, interval, reset_user):
     window = SimpleWindow(parent=root, 
                           user=u, ts=ts,
                           show_msec=show_msec, update_interval=interval)
-    window.pack()
+    window.pack(expand=YES, fill=BOTH)
     window.mainloop()
     
 

@@ -38,7 +38,7 @@ class SimpleWindow(Frame):
     def update_label(self):
         self.v.set(self.format_time())
         self.label.textvariable = self.v
-        self.label.pack()
+        self.label.pack(expand=YES, fill=BOTH)
         self.label.after(self.update_interval, self.update_label)
 
     def format_time(self):
