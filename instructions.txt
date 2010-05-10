@@ -23,6 +23,10 @@
     - year
     - day
     - hour
+    - month
+    - universe
+    - reverseuniverse
+    - percent
     For example, python mm.py -t year or python mm.py --timescale=day
     will set the timescale to a day.  Default timescale is a year.
   - --interval sets the update interval in milliseconds.  Default is
@@ -30,6 +34,14 @@
     update interval to 2 sec.
   - --reset asks for new user data.  Otherwise MorbidMeter reuses the
     last set of user data.
+- Timescales
+  - year: life is compressed to a single year.
+  - day: life is compressed to 24 hours.
+  - hour: life is compressed to a single hour.
+  - month: life is compressed to the month of January.
+  - universe: life is expanded from the Big Bang to present (15 billion years).
+  - reverseuniverse: like above only counting down the years.
+  - percent: what percentage of your life is gone.
 - Examples
   - First time usage
     python mm.py will prompt you to rerun with either the --gui or

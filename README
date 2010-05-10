@@ -28,9 +28,13 @@ switch, e.g.
 
 ./mm --gui -t day
 
-Supported timescales so far are year, day, and hour.  Add the --msec
-switch to display milliseconds (if you really want to be depressed --
-they go by fairly quickly).
+Supported timescales so far are year, month, day, and hour.  Add the
+--msec switch to display milliseconds (if you really want to be
+depressed -- they go by fairly quickly).  Additional non-date-based
+timescales available are universe (the age of the universe from Big
+Bang to present, set at 15 billion years), reverseuniverse (like
+universe only counting down), and percent (percent of your life
+already lived).
 
-MorbidMeter remembers user data between invocations.  add the --reset
-switch to change user data.
+MorbidMeter remembers user data between invocations.  Add the --reset
+switch to change user data, e.g. ./mm --gui --reset.

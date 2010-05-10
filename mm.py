@@ -65,8 +65,9 @@ def parse_options():
                       dest="zen", default=False)
     (options, args) = parser.parse_args()
     # check available timescales
-    if (options.timescale not in ["year", "day", "hour", "month"]):
-        print options.timescale, "not supported."
+    if (options.timescale not in ["year", "day", "hour", "month", 
+                                  "percent", "universe", "reverseuniverse"]):
+        print "Timescale", options.timescale, "not supported."
         return
     if (options.example):
         example()
@@ -169,6 +170,14 @@ def get_timescale(timescale):
         return DateTimeScale("month",
                              datetime(2000,1,1), datetime(2000,2,1),
                              "%b %d %I:%M:%S %p")
+    elif (timescale == "universe"): # big bang to age of universe
+        return TimeScale("universe",
+                         0, 15000000000)
+    elif (timescale == "reverseuniverse"):
+        return TimeScale("reverseuniverse",
+                         0, 15000000000)
+    elif (timescale == "percent"):
+        return TimeScale("percent", 0, 100)
     else:
         return None
     
@@ -200,8 +209,13 @@ def interactive(show_msec, timescale, interval, reset_user):
     thread.start_new_thread(stop_it, ())
     while terminate_it == 0:
         proportional_time = ts.proportional_time(u.percent_alive())
-        print proportional_time.strftime(ts.format_string), \
-             proportional_time.microsecond / 1000, "msec"
+        if ts.name in ["universe", "percent"]:
+            print proportional_time
+        elif ts.name == "reverseuniverse":
+            print 15000000000 - proportional_time
+        else:
+            print proportional_time.strftime(ts.format_string), \
+                proportional_time.microsecond / 1000, "msec"
         sleep(interval / 1000)
 
 def gui(show_msec, timescale, interval, reset_user):    

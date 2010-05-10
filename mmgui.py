@@ -43,7 +43,11 @@ class SimpleWindow(Frame):
 
     def format_time(self):
         t = self.ts.proportional_time(self.user.percent_alive())
-        if self.show_msec:
+        if self.ts.name == "universe" or self.ts.name == "percent":
+            return "%.2f" % t 
+        elif self.ts.name == "reverseuniverse":
+            return "%.2f" % (15000000000 - t)
+        elif self.show_msec:
             return t.strftime(self.ts.format_string) + \
                 " " + str(t.microsecond / 1000).zfill(3) + " msec"
         else:
