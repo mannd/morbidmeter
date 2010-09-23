@@ -61,22 +61,26 @@ def parse_options():
     parser.add_option("--reset", action="store_true",
                       dest="reset_user", default=False,
                       help="reset user information")
+    parser.add_option("-r", "--reverse", action="store_true",
+                      dest="reverse_time", default=False,
+                      help="display time remaining")
     parser.add_option("-z", "--zen", action="store_true",
                       dest="zen", default=False)
     (options, args) = parser.parse_args()
     # check available timescales
     if (options.timescale not in ["year", "day", "hour", "month", 
-                                  "percent", "universe", "reverseuniverse"]):
+                                  "percent", "universe"]):
         print "Timescale", options.timescale, "not supported."
         return
     if (options.example):
         example()
     elif (options.interactive):
         interactive(options.show_msec, options.timescale, 
-                    options.interval, options.reset_user)
+                    options.interval, options.reset_user,
+                    options.reverse_time)
     elif (options.gui):
         gui(options.show_msec, options.timescale, 
-            options.interval, options.reset_user)
+            options.interval, options.reset_user, options.reverse_time)
     elif (options.zen):
         zen()
     else:
@@ -173,9 +177,6 @@ def get_timescale(timescale):
     elif (timescale == "universe"): # big bang to age of universe
         return TimeScale("universe",
                          0, 15000000000)
-    elif (timescale == "reverseuniverse"):
-        return TimeScale("reverseuniverse",
-                         0, 15000000000)
     elif (timescale == "percent"):
         return TimeScale("percent", 0, 100)
     else:
@@ -192,7 +193,7 @@ def get_user_timescale(timescale, new_user):
     ts = get_timescale(timescale)
     return (u, ts)
 
-def interactive(show_msec, timescale, interval, reset_user):
+def interactive(show_msec, timescale, interval, reset_user, reverse_time):
     print "MorbidMeter will output your calculated date and time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will update every", interval, "msec."
@@ -208,17 +209,18 @@ def interactive(show_msec, timescale, interval, reset_user):
     global terminate_it
     thread.start_new_thread(stop_it, ())
     while terminate_it == 0:
-        proportional_time = ts.proportional_time(u.percent_alive())
+        if (reverse_time and ts.name in ["universe", "percent"]):
+            proportional_time = ts.reverse_proportional_time(u.percent_alive())
+        else:
+            proportional_time = ts.proportional_time(u.percent_alive())
         if ts.name in ["universe", "percent"]:
             print proportional_time
-        elif ts.name == "reverseuniverse":
-            print 15000000000 - proportional_time
         else:
             print proportional_time.strftime(ts.format_string), \
                 proportional_time.microsecond / 1000, "msec"
         sleep(interval / 1000)
 
-def gui(show_msec, timescale, interval, reset_user):    
+def gui(show_msec, timescale, interval, reset_user, reverse_time):    
     print "MorbidMeter will show the calculated date and/or time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will appear in a small window."
