@@ -64,12 +64,15 @@ def parse_options():
     parser.add_option("-r", "--reverse", action="store_true",
                       dest="reverse_time", default=False,
                       help="display time remaining")
+    parser.add_option("--sound", action="store_true",
+                      dest="use_sound", default=False,
+                      help="play sounds on the hour")
     parser.add_option("-z", "--zen", action="store_true",
                       dest="zen", default=False)
     (options, args) = parser.parse_args()
     # check available timescales
     if (options.timescale not in ["year", "day", "hour", "month", 
-                                  "percent", "universe"]):
+                                  "percent", "universe", "age"]):
         print "Timescale", options.timescale, "not supported."
         return
     if (options.example):
@@ -80,7 +83,8 @@ def parse_options():
                     options.reverse_time)
     elif (options.gui):
         gui(options.show_msec, options.timescale, 
-            options.interval, options.reset_user, options.reverse_time)
+            options.interval, options.reset_user, options.reverse_time,
+            options.use_sound)
     elif (options.zen):
         zen()
     else:
@@ -179,6 +183,8 @@ def get_timescale(timescale):
                          0, 15000000000)
     elif (timescale == "percent"):
         return TimeScale("percent", 0, 100)
+    elif (timescale == "age"):
+        return DateTimeScale("age", 0, 0,"")
     else:
         return None
     
@@ -191,6 +197,9 @@ def get_user_timescale(timescale, new_user):
             return (None, None)
         write_last_user(u.name, u.birthday, u.longevity)
     ts = get_timescale(timescale)
+    if (ts.name == "age"):
+        ts.maximum = u.deathday()
+        ts.minimum = u.birthday
     return (u, ts)
 
 def interactive(show_msec, timescale, interval, reset_user, reverse_time):
@@ -209,18 +218,20 @@ def interactive(show_msec, timescale, interval, reset_user, reverse_time):
     global terminate_it
     thread.start_new_thread(stop_it, ())
     while terminate_it == 0:
-        if (reverse_time and ts.name in ["universe", "percent"]):
-            proportional_time = ts.reverse_proportional_time(u.percent_alive())
+        if ts.name == "age":
+            proportional_time = ts.proportional_time(u.percent_alive()) - u.birthday
         else:
             proportional_time = ts.proportional_time(u.percent_alive())
-        if ts.name in ["universe", "percent"]:
+        if reverse_time:
+            proportional_time = ts.reverse_proportional_time(u.percent_alive())
+        if ts.name in ["universe", "percent", "age"] or reverse_time:
             print proportional_time
         else:
             print proportional_time.strftime(ts.format_string), \
                 proportional_time.microsecond / 1000, "msec"
         sleep(interval / 1000)
 
-def gui(show_msec, timescale, interval, reset_user, reverse_time):    
+def gui(show_msec, timescale, interval, reset_user, reverse_time, use_sound):    
     print "MorbidMeter will show the calculated date and/or time"
     print "assuming your life is compressed to a single", timescale + "."
     print "MorbidMeter will appear in a small window."
@@ -236,7 +247,8 @@ def gui(show_msec, timescale, interval, reset_user, reverse_time):
     root.bell()
     window = SimpleWindow(parent=root, 
                           user=u, ts=ts,
-                          show_msec=show_msec, update_interval=interval)
+                          show_msec=show_msec, update_interval=interval,
+                          reverse_time=reverse_time, use_sound=use_sound)
     window.pack(expand=YES, fill=BOTH)
     window.mainloop()
     
