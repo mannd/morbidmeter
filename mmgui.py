@@ -8,7 +8,7 @@ from threading import *
 from time import sleep
 from timescale import *
 from user import *
-from mmshared import os_is_windows
+from mmshared import os_is_windows, play_sound
 
 class SimpleWindow(Frame):
     def __init__(self, parent, ts, user,
@@ -28,6 +28,7 @@ class SimpleWindow(Frame):
         self.label = Label(self, textvariable=self.v)
         self.update_label()
         icon_name = 'skull'
+        self.sound_on = True
         if os_is_windows():
             icon_file = icon_name + '.ico'
         else:
@@ -63,13 +64,14 @@ class SimpleWindow(Frame):
             return t.strftime(self.ts.format_string) + \
                 " " + str(t.microsecond / 1000).zfill(3) + " msec"
         else:
-            # if self.use_sound:
-            #     sound_on = False
-            #     if t.timedelta.seconds % 3600 != 0:
-            #         sound_on = True
-            #     if t.timedelta.seconds % 3600 == 0 and sound_on:
-            #         sound_on = False
-            #         os.system("cvlc Bells.wav")
-
+            if self.use_sound:
+                mins_secs = t.strftime(self.ts.format_string)[-8:-3]
+                if mins_secs != "00:00":
+                    self.sound_on = True
+                if self.sound_on and mins_secs == "00:00":
+                    self.sound_on = False
+                    play_sound()
             return t.strftime(" " + self.ts.format_string 
                               + " ")
+
+

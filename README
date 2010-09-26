@@ -38,6 +38,9 @@ lived).
 MorbidMeter can display a reverse timescale (counting down to 0) by adding the
 --reverse switch.  
 
+MorbidMeter will play a dirge-like sound (Linux only, VLC required) when using
+the year timescale, on the MorbidMeter-hour if you use the --sound switch.
+
 Try the --help switch for a complete list of command line options.
 
 MorbidMeter remembers user data between invocations.  Add the --reset

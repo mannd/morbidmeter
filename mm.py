@@ -12,7 +12,7 @@ from timescale import TimeScale, DateTimeScale
 from time import sleep
 from Tkinter import *
 from mmgui import SimpleWindow
-from mmshared import os_is_windows
+from mmshared import os_is_windows, play_sound
 import thread
 
 #global for threading
@@ -23,11 +23,11 @@ def stop_it():
     while True:
         if raw_input() == 'q':
             terminate_it = 1
-
+    
 def parse_options():
     program_name = "MorbidMeter"
     short_program_name = "mm"
-    version = "0.2"
+    version = "0.3.0"
     if os_is_windows():
         program_invocation = "python " + short_program_name + ".py"
     else:
