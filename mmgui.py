@@ -52,9 +52,9 @@ class SimpleWindow(Frame):
         if self.reverse_time:
             t = self.ts.reverse_proportional_time(self.user.percent_alive())
         if self.ts.name == "percent":
-            return "%.6f" % t 
+            return "%.6f %%" % t 
         elif self.ts.name == "universe":
-            return "%.2f" % t
+            return "%.2f years" % t
         elif self.ts.name == "age":
             return t
         elif self.reverse_time:
