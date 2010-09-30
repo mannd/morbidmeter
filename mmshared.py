@@ -11,3 +11,6 @@ def os_is_windows():
 def play_sound():
     if not os_is_windows():
         os.system("cvlc Bells.wav --play-and-exit &")
+    else:
+        import winsound
+        winsound.PlaySound('Bells.wav', winsound.SND_FILENAME)
