@@ -67,6 +67,9 @@ def parse_options():
     parser.add_option("--sound", action="store_true",
                       dest="use_sound", default=False,
                       help="play sounds on the hour")
+    parser.add_option("-p", "--print", action="store_true",
+                      dest="print_info", default=False,
+                      help="print current user data")
     parser.add_option("-z", "--zen", action="store_true",
                       dest="zen", default=False)
     (options, args) = parser.parse_args()
@@ -87,6 +90,8 @@ def parse_options():
             options.use_sound)
     elif (options.zen):
         zen()
+    elif (options.print_info):
+        print_user()
     else:
         print "Right now morbidmeter doesn't do much, but rerun as: "
         print program_invocation + " --example"
@@ -143,6 +148,14 @@ def main():
     # create_config()
     # read_config()
 
+def print_user():
+    u = read_last_user()
+    if u == None:
+        print "No user has been selected."
+    else:
+        print "User birthdate is ", u.birthday.strftime("%x") + "."
+        print "User longevity is", u.longevity, "years."
+    
 def zen():
     print "Time is running out -- MorbidMeter tells you how fast..."
 
