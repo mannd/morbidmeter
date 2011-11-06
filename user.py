@@ -32,7 +32,7 @@ class User:
         return self.longevity * self.seconds_per_year
 
     def deathday(self):
-        daysalive = int(self.longevity * 365)
+        daysalive = int(self.longevity * 365.25)
         return self.birthday + timedelta(daysalive)
 
     def percent_alive(self):
