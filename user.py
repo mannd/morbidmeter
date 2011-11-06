@@ -18,7 +18,7 @@ class User:
         self.birthday=birthday
         self.longevity=longevity
 
-    seconds_per_year = 365 * 24 * 60 * 60
+    seconds_per_year = 365.25 * 24 * 60 * 60
     min_age = 1
     max_age = 130
 
