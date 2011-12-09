@@ -21,7 +21,7 @@ class TimeScale:
         return self.minimum + percent * self.duration()
 
     def reverse_proportional_time(self, percent):
-        return self.maximum - self.proportional_time(percent)
+        return self.maximum - percent * self.duration()
     
 class DateTimeScale(TimeScale):
     """Time scale that uses DateTime"""
@@ -33,6 +33,7 @@ class DateTimeScale(TimeScale):
                                         (percent * self.duration()))
 
     def reverse_proportional_time(self, percent):
-        return self.maximum - self.proportional_time(percent)
+        return self.maximum - timedelta(seconds=
+                                        (percent * self.duration()))
 
 
